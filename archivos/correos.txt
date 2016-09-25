@@ -1,0 +1,11 @@
+Mensaje
+
+<b>Nombre:</b> Alex<br /><br />
+<b>Email:</b> aacosta8@eafit.edu.co<br /><br />
+<b>Comment:</b> Quiero ser un estilista de corazón<br /><br />
+
+Hora: septiembre 25, 2016 pm Domingopm22 9:27 pm<br />
+Dirección IP: 181.139.145.53<br />
+URL del formulario de contacto: https://ejemplo107.wordpress.com/contact/<br />
+Enviado a tu sitio por un visitante no verificado.
+
