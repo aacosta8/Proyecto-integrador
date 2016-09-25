@@ -1,0 +1,291 @@
+DROP TABLE ubicacion;
+DROP TABLE persona;
+DROP TABLE estilista;
+DROP TABLE cliente;
+DROP TABLE calificacion;
+DROP TABLE horario;
+DROP TABLE estilistacorte;
+DROP TABLE corte;
+DROP TABLE cita;
+DROP TABLE detalleestado;
+DROP TABLE experiencia;
+
+---------------------------------------------------------------ubicacion----------------------------------------------------
+
+CREATE TABLE ubicacion
+(
+  idubicacion character varying NOT NULL,
+  barrio character varying NOT NULL,
+  direccion character varying NOT NULL,
+  CONSTRAINT ubicacion_pkey PRIMARY KEY (idubicacion)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ubicacion
+  OWNER TO alex;
+
+
+
+INSERT INTO ubicacion(idubicacion, barrio, direccion)
+    VALUES ('001', 'Doce de Octubre', 'cra 78 # 104 c 22');
+
+INSERT INTO ubicacion(idubicacion, barrio, direccion)
+    VALUES ('002', 'Pedregal', 'cra 78 # 102 c 20');
+
+
+---------------------------------------------------------------persona----------------------------------------------------
+
+CREATE TABLE persona
+(
+  idpersona character varying NOT NULL,
+  nombre character varying NOT NULL,
+  apellido character varying NOT NULL,
+  fechanacimiento date,
+  genero boolean NOT NULL,
+  telefonomovil character varying NOT NULL,
+  telefonofijo character varying,
+  idubicacion character varying,
+  fotoperfil bytea,
+  tipo character varying NOT NULL,
+  CONSTRAINT persona_pkey PRIMARY KEY (idpersona),
+  CONSTRAINT persona_idubicacion_fkey FOREIGN KEY (idubicacion)
+      REFERENCES ubicacion (idubicacion) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE persona
+  OWNER TO alex;
+
+
+INSERT INTO persona(idpersona, nombre, apellido, fechanacimiento, genero, telefonomovil, telefonofijo, idubicacion, fotoperfil, tipo)
+    VALUES ('001', 'alex', 'acosta', '2016-05-10', true, '3137180194', '4778365', '001', null, 'estilista');
+
+INSERT INTO persona(idpersona, nombre, apellido, fechanacimiento, genero, telefonomovil, telefonofijo, idubicacion, fotoperfil, tipo)
+    VALUES ('002', 'ana', 'bedoya', '2016-05-10', false, '3137180194', '4778365', '002', null, 'cliente');
+
+---------------------------------------------------------------estilista----------------------------------------------------
+
+CREATE TABLE estilista
+(
+  idestilista character varying NOT NULL,
+  especialidad character varying NOT NULL,
+  correoelectronico character varying NOT NULL,
+  CONSTRAINT estilista_pkey PRIMARY KEY (idestilista),
+  CONSTRAINT estilista_idestilista_fkey FOREIGN KEY (idestilista)
+      REFERENCES persona (idpersona) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE estilista
+  OWNER TO alex;
+
+
+INSERT INTO estilista(idestilista, especialidad, correoelectronico)
+    VALUES ('001', 'barbero', 'aacosta8@eafit.edu.co');
+
+
+---------------------------------------------------------------cliente----------------------------------------------------
+
+CREATE TABLE cliente
+(
+  idcliente character varying NOT NULL,
+  tipodiscapacidad character varying,
+  CONSTRAINT cliente_pkey PRIMARY KEY (idcliente),
+  CONSTRAINT cliente_idcliente_fkey FOREIGN KEY (idcliente)
+      REFERENCES persona (idpersona) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cliente
+  OWNER TO alex;
+
+INSERT INTO cliente(idCliente, tipoDiscapacidad)
+    VALUES ('002', 'Motora');
+
+---------------------------------------------------------------calificacion----------------------------------------------------
+
+CREATE TABLE calificacion
+(
+  idcalificacion character varying NOT NULL,
+  idestilista character varying NOT NULL,
+  idcliente character varying NOT NULL,
+  calificacion integer NOT NULL,
+  CONSTRAINT calificacion_pkey PRIMARY KEY (idcalificacion),
+  CONSTRAINT calificacion_idcliente_fkey FOREIGN KEY (idcliente)
+      REFERENCES cliente (idcliente) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT calificacion_idestilista_fkey FOREIGN KEY (idestilista)
+      REFERENCES estilista (idestilista) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE calificacion
+  OWNER TO alex;
+
+INSERT INTO calificacion(idcalificacion, idestilista, idcliente, calificacion)
+    VALUES ('001', '001', '002', 5 );
+
+---------------------------------------------------------------horario----------------------------------------------------
+
+CREATE TABLE horario
+(
+  idhorario character varying NOT NULL,
+  fecha date NOT NULL,
+  horainicio time with time zone NOT NULL,
+  horafin time without time zone NOT NULL,
+  idestilista character varying NOT NULL,
+  CONSTRAINT horario_pkey PRIMARY KEY (idhorario),
+  CONSTRAINT horario_idestilista_fkey FOREIGN KEY (idestilista)
+      REFERENCES estilista (idestilista) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE horario
+  OWNER TO alex;
+
+INSERT INTO horario(idhorario, fecha, horainicio, horafin, idestilista)
+    VALUES ('001', '2016-05-10' , '13:00:00' , '14:00:00', '001');
+
+
+INSERT INTO horario(idhorario, fecha, horainicio, horafin, idestilista)
+    VALUES ('002', '2016-05-10' , '14:00:00' , '15:00:00', '001');
+
+---------------------------------------------------------------corte----------------------------------------------------
+
+CREATE TABLE corte
+(
+  idcorte character varying NOT NULL,
+  nombrecorte character varying NOT NULL,
+  descripcion character varying,
+  foto bytea,
+  CONSTRAINT corte_pkey PRIMARY KEY (idcorte)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE corte
+  OWNER TO alex;
+
+INSERT INTO corte(idcorte, nombrecorte, descripcion, foto)
+    VALUES ('001', 'Feis', 'es un corte muy bonito', null);
+
+INSERT INTO corte(idcorte, nombrecorte, descripcion, foto)
+    VALUES ('002', 'Cresta', 'es un corte muy bacano', null);
+
+
+
+
+---------------------------------------------------------------estilistacorte----------------------------------------------------
+
+CREATE TABLE estilistacorte
+(
+  idestilista character varying NOT NULL,
+  idcorte character varying,
+  CONSTRAINT estilistacorte_idcorte_fkey FOREIGN KEY (idcorte)
+      REFERENCES corte (idcorte) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT estilistacorte_idestilista_fkey FOREIGN KEY (idestilista)
+      REFERENCES estilista (idestilista) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE estilistacorte
+  OWNER TO alex;
+
+INSERT INTO estilistacorte(idestilista, idcorte)
+    VALUES ('001', '001');
+
+INSERT INTO estilistacorte(idestilista, idcorte)
+    VALUES ('001', '002');
+
+
+---------------------------------------------------------------detalleestado----------------------------------------------------
+
+CREATE TABLE detalleestado
+(
+  idestado character varying NOT NULL,
+  estado character varying NOT NULL,
+  CONSTRAINT detalleestado_pkey PRIMARY KEY (idestado)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE detalleestado
+  OWNER TO alex;
+
+INSERT INTO detalleestado(idestado, estado)
+    VALUES ('001', 'por confirmar');
+
+INSERT INTO detalleestado(idestado, estado)
+    VALUES ('002', 'confirmada');
+
+
+---------------------------------------------------------------cita----------------------------------------------------
+
+CREATE TABLE cita
+(
+  idcita character varying NOT NULL,
+  fecha date NOT NULL,
+  horainicio time without time zone NOT NULL,
+  idestado character varying NOT NULL,
+  idestilista character varying NOT NULL,
+  idcliente character varying,
+  CONSTRAINT cita_pkey PRIMARY KEY (idcita),
+  CONSTRAINT cita_idcliente_fkey FOREIGN KEY (idcliente)
+      REFERENCES cliente (idcliente) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT cita_idestado_fkey FOREIGN KEY (idestado)
+      REFERENCES detalleestado (idestado) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT cita_idestilista_fkey FOREIGN KEY (idestilista)
+      REFERENCES estilista (idestilista) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cita
+  OWNER TO alex;
+
+INSERT INTO cita(idcita, fecha, horainicio, idestado, idestilista, idcliente)
+    VALUES ('001', '2016-05-10', '14:00:00', '001', '001' , '002');
+
+
+---------------------------------------------------------------experiencia----------------------------------------------------
+
+CREATE TABLE experiencia
+(
+  idexperiencia character varying NOT NULL,
+  idpersona character varying NOT NULL,
+  comentario character varying NOT NULL,
+  fotoexp bytea,
+  CONSTRAINT experiencia_pkey PRIMARY KEY (idexperiencia),
+  CONSTRAINT experiencia_idpersona_fkey FOREIGN KEY (idpersona)
+      REFERENCES persona (idpersona) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE experiencia
+  OWNER TO alex;
+
+INSERT INTO experiencia(idexperiencia, idpersona, comentario, fotoexp)
+    VALUES ('001', '001', 'Que experiencia tan bacana', null);
+
+INSERT INTO experiencia(idexperiencia, idpersona, comentario, fotoexp)
+    VALUES ('002', '002', 'Que experiencia tan chevere', null);
+
