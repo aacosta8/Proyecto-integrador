@@ -8,7 +8,7 @@
  * Controller of the pi1App
  */
 angular.module('pi1App')
-  .controller('AboutCtrl', function () {
+  .controller('SobreNosotrosCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
