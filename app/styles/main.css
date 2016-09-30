@@ -80,4 +80,15 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+
+  .contacto label{
+    display: block; /* esto es para que el label se sobreponga a la caja de texto */
+    font-weight: bold;
+  }
+  .contacto div{
+    margin-bottom: 15px; /* esto los separara un poco */
+    text-align: center
+  }
 }
+
+
