@@ -23,7 +23,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE ubicacion
-  OWNER TO alex;
+  OWNER TO jossava;
 
 
 
@@ -57,7 +57,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE persona
-  OWNER TO alex;
+  OWNER TO jossava;
 
 
 INSERT INTO persona(idpersona, nombre, apellido, fechanacimiento, genero, telefonomovil, telefonofijo, idubicacion, fotoperfil, tipo)
@@ -82,7 +82,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE estilista
-  OWNER TO alex;
+  OWNER TO jossava;
 
 
 INSERT INTO estilista(idestilista, especialidad, correoelectronico)
@@ -104,7 +104,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE cliente
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO cliente(idCliente, tipoDiscapacidad)
     VALUES ('002', 'Motora');
@@ -129,7 +129,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE calificacion
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO calificacion(idcalificacion, idestilista, idcliente, calificacion)
     VALUES ('001', '001', '002', 5 );
@@ -152,7 +152,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE horario
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO horario(idhorario, fecha, horainicio, horafin, idestilista)
     VALUES ('001', '2016-05-10' , '13:00:00' , '14:00:00', '001');
@@ -175,7 +175,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE corte
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO corte(idcorte, nombrecorte, descripcion, foto)
     VALUES ('001', 'Feis', 'es un corte muy bonito', null);
@@ -203,7 +203,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE estilistacorte
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO estilistacorte(idestilista, idcorte)
     VALUES ('001', '001');
@@ -224,7 +224,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE detalleestado
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO detalleestado(idestado, estado)
     VALUES ('001', 'por confirmar');
@@ -258,7 +258,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE cita
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO cita(idcita, fecha, horainicio, idestado, idestilista, idcliente)
     VALUES ('001', '2016-05-10', '14:00:00', '001', '001' , '002');
@@ -281,7 +281,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE experiencia
-  OWNER TO alex;
+  OWNER TO jossava;
 
 INSERT INTO experiencia(idexperiencia, idpersona, comentario, fotoexp)
     VALUES ('001', '001', 'Que experiencia tan bacana', null);
